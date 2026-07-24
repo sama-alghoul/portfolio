@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sama Alghoul — Network Security Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F7F9FF;
+    --panel:#FFFFFF;
+    --panel-line:#DCE3F7;
+    --blue:#2D5BFF;
+    --coral:#FF5E3A;
+    --mint:#00C2A8;
+    --text:#0B1428;
+    --muted:#5B6B8C;
+    --radius:4px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Manrope',sans-serif;
+    line-height:1.6;
+    position:relative;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important;}
+  }
+
+  /* background grid texture */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      linear-gradient(rgba(45,91,255,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(45,91,255,0.06) 1px, transparent 1px);
+    background-size:42px 42px;
+    pointer-events:none;
+    z-index:0;
+  }
+  body::after{
+    content:"";
+    position:fixed; inset:0;
+    background:radial-gradient(ellipse 900px 500px at 20% 0%, rgba(255,94,58,0.08), transparent 60%);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .wrap{position:relative; z-index:1; max-width:920px; margin:0 auto; padding:0 28px;}
+
+  code, .mono{font-family:'Space Mono',monospace;}
+
+  /* NAV */
+  nav{
+    position:sticky; top:0; z-index:10;
+    background:rgba(247,249,255,0.88);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--panel-line);
+  }
+  .nav-inner{
+    max-width:920px; margin:0 auto; padding:16px 28px;
+    display:flex; justify-content:space-between; align-items:center;
+    flex-wrap:wrap; gap:12px;
+  }
+  .nav-id{font-family:'Space Mono',monospace; font-size:13px; color:var(--blue); letter-spacing:0.5px; font-weight:700;}
+  .nav-links{display:flex; gap:26px; list-style:none; margin:0; padding:0;}
+  .nav-links a{color:var(--muted); text-decoration:none; font-size:14px; font-weight:600; transition:color .2s;}
+  .nav-links a:hover, .nav-links a:focus-visible{color:var(--coral);}
+
+  /* HERO */
+  header.hero{padding:88px 0 64px;}
+  .status-line{
+    font-family:'Space Mono',monospace; font-size:13px; color:var(--coral);
+    display:flex; align-items:center; gap:10px; margin-bottom:22px; font-weight:700;
+  }
+  .status-dot{width:8px; height:8px; border-radius:50%; background:var(--coral); box-shadow:0 0 8px var(--coral); animation:pulse 1.8s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;} 50%{opacity:.35;}}
+
+  h1{
+    font-family:'Sora',sans-serif;
+    font-size:clamp(38px,6vw,64px);
+    font-weight:800;
+    line-height:1.05;
+    margin:0 0 14px;
+    letter-spacing:-1px;
+    color:var(--text);
+  }
+  .role-type{
+    font-family:'Space Mono',monospace;
+    color:var(--blue);
+    font-size:clamp(15px,2.4vw,19px);
+    font-weight:700;
+    min-height:1.6em;
+    border-right:2px solid var(--blue);
+    display:inline-block;
+    white-space:nowrap;
+    overflow:hidden;
+  }
+  .hero-summary{max-width:560px; color:var(--muted); font-size:16px; margin:26px 0 34px;}
+  .hero-meta{display:flex; gap:22px; flex-wrap:wrap; font-family:'Space Mono',monospace; font-size:13px; color:var(--muted);}
+  .hero-meta span{color:var(--text); font-weight:700;}
+  .hero-cta{margin-top:36px; display:flex; gap:14px; flex-wrap:wrap;}
+  .btn{
+    font-family:'Space Mono',monospace; font-size:13px; padding:12px 22px;
+    border-radius:var(--radius); text-decoration:none; font-weight:700;
+    transition:all .2s; border:1px solid transparent; cursor:pointer;
+  }
+  .btn-primary{background:var(--blue); color:#FFFFFF;}
+  .btn-primary:hover{background:#1943e0; transform:translateY(-1px);}
+  .btn-outline{border-color:var(--panel-line); color:var(--text); background:var(--panel);}
+  .btn-outline:hover{border-color:var(--coral); color:var(--coral);}
+
+  /* SECTION HEADERS */
+  section{padding:70px 0; border-top:1px solid var(--panel-line);}
+  .section-tag{
+    font-family:'Space Mono',monospace; color:var(--coral); font-size:12px;
+    letter-spacing:2px; text-transform:uppercase; margin-bottom:10px; font-weight:700;
+  }
+  h2{font-family:'Sora',sans-serif; font-size:30px; margin:0 0 34px; font-weight:700; color:var(--text);}
+
+  /* ABOUT */
+  .about-grid{display:grid; grid-template-columns:1.3fr 1fr; gap:48px;}
+  @media (max-width:720px){.about-grid{grid-template-columns:1fr;}}
+  .about-text p{color:var(--muted); font-size:15px; margin-bottom:16px;}
+  .skill-block{margin-bottom:20px;}
+  .skill-block h3{font-size:12px; text-transform:uppercase; letter-spacing:1.5px; color:var(--blue); margin:0 0 10px; font-weight:700; font-family:'Space Mono',monospace;}
+  .chips{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{
+    font-family:'Space Mono',monospace; font-size:12px; color:var(--text);
+    background:var(--panel); border:1px solid var(--panel-line);
+    padding:5px 10px; border-radius:var(--radius); font-weight:700;
+  }
+
+  /* EXPERIENCE — case-log timeline */
+  .log{border-left:2px solid var(--panel-line); margin-left:6px;}
+  .entry{position:relative; padding:0 0 44px 34px;}
+  .entry:last-child{padding-bottom:0;}
+  .entry::before{
+    content:""; position:absolute; left:-8px; top:4px;
+    width:13px; height:13px; border-radius:50%;
+    background:var(--bg); border:3px solid var(--blue);
+  }
+  .entry-id{font-family:'Space Mono',monospace; font-size:12px; color:var(--coral); margin-bottom:6px; letter-spacing:1px; font-weight:700;}
+  .entry-card{
+    background:var(--panel); border:1px solid var(--panel-line); border-radius:var(--radius);
+    padding:22px 24px;
+    box-shadow:0 2px 10px rgba(45,91,255,0.06);
+  }
+  .entry-card h3{font-family:'Sora',sans-serif; font-size:19px; margin:0 0 6px; font-weight:700; color:var(--text);}
+  .entry-fields{
+    display:flex; gap:18px; flex-wrap:wrap; font-family:'Space Mono',monospace; font-size:11.5px;
+    color:var(--muted); margin-bottom:14px; text-transform:uppercase; letter-spacing:0.5px;
+  }
+  .entry-fields b{color:var(--mint); font-weight:700;}
+  .entry-card ul{margin:0; padding-left:18px; color:var(--muted); font-size:14.5px;}
+  .entry-card li{margin-bottom:6px;}
+  .entry-tags{margin-top:16px; display:flex; flex-wrap:wrap; gap:7px;}
+  .tag-sm{
+    font-family:'Space Mono',monospace; font-size:11px; color:var(--blue);
+    border:1px solid var(--panel-line); padding:3px 8px; border-radius:var(--radius); font-weight:700;
+  }
+
+  /* CERTS + EDUCATION */
+  .cert-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media (max-width:600px){.cert-grid{grid-template-columns:1fr;}}
+  .cert-card{
+    background:var(--panel); border:1px solid var(--panel-line); border-radius:var(--radius);
+    padding:20px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px;
+    box-shadow:0 2px 10px rgba(45,91,255,0.06);
+  }
+  .cert-card h4{margin:0 0 4px; font-family:'Sora',sans-serif; font-size:16px; font-weight:700; color:var(--text);}
+  .cert-card p{margin:0; color:var(--muted); font-size:13px;}
+  .badge{
+    font-family:'Space Mono',monospace; font-size:10.5px; color:#fff; background:var(--coral);
+    padding:3px 8px; border-radius:var(--radius); white-space:nowrap; font-weight:700;
+  }
+
+  .edu-card{
+    background:var(--panel); border:1px solid var(--panel-line); border-radius:var(--radius);
+    padding:22px 24px; margin-top:16px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    box-shadow:0 2px 10px rgba(45,91,255,0.06);
+  }
+  .edu-card h4{margin:0 0 4px; font-family:'Sora',sans-serif; font-size:17px; color:var(--text);}
+  .edu-card p{margin:0; color:var(--muted); font-size:14px;}
+  .gpa{font-family:'Space Mono',monospace; color:var(--blue); font-size:14px; font-weight:700;}
+
+  /* CONTACT */
+  .contact-card{
+    background:var(--panel); border:1px solid var(--panel-line); border-radius:var(--radius);
+    padding:36px; text-align:center;
+    box-shadow:0 2px 10px rgba(45,91,255,0.06);
+  }
+  .contact-card p{color:var(--muted); max-width:440px; margin:0 auto 26px;}
+  .contact-links{display:flex; gap:16px; justify-content:center; flex-wrap:wrap;}
+
+  footer{padding:30px 0 60px; text-align:center; color:var(--muted); font-family:'Space Mono',monospace; font-size:12px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <span class="nav-id">SAMA_ALGHOUL // PROFILE.EXE</span>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#certifications">Certifications</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="status-line"><span class="status-dot"></span> STATUS: OPEN TO WORK — IRBID, JORDAN</div>
+    <h1>Sama Alghoul</h1>
+    <div class="role-type mono" id="typewriter"></div>
+    <p class="hero-summary">
+      Cybersecurity graduate who builds the network before breaking it. Experience spans
+      enterprise routing and switching, Windows Server &amp; Active Directory administration,
+      and full offensive/defensive engagements — from standing up a vulnerable target to
+      exploiting it, then watching the alert fire in Splunk.
+    </p>
+    <div class="hero-meta">
+      <div>📍 <span>Irbid, Jordan</span></div>
+      <div>🎓 <span>B.Sc. Cybersecurity, Yarmouk University — 2025</span></div>
+      <div>✉️ <span>samaalghoul20@gmail.com</span></div>
+    </div>
+    <div class="hero-cta">
+      <a href="#experience" class="btn btn-primary">View Experience</a>
+      <a href="mailto:samaalghoul20@gmail.com" class="btn btn-outline">Get In Touch</a>
+    </div>
+  </header>
+
+  <section id="about">
+    <div class="section-tag">01 — Overview</div>
+    <h2>About</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          I'm a recent cybersecurity graduate focused on network security and systems
+          administration. My work is hands-on by default: I'd rather stand up a domain
+          controller, misconfigure a service on purpose, and then attack it than just
+          read about how the vulnerability works.
+        </p>
+        <p>
+          I'm currently working toward CCNA and Microsoft SC-200 (Security Operations
+          Analyst) certifications, and looking for an entry-level Network Security
+          Engineer or SOC Analyst role where I can put that foundation to work.
+        </p>
+      </div>
+      <div class="about-skills">
+        <div class="skill-block">
+          <h3>Networking</h3>
+          <div class="chips">
+            <span class="chip">VLANs &amp; Trunking</span>
+            <span class="chip">OSPF</span>
+            <span class="chip">Inter-VLAN Routing</span>
+            <span class="chip">DHCP / DNS / NAT</span>
+            <span class="chip">ACLs</span>
+            <span class="chip">Port Security</span>
+          </div>
+        </div>
+        <div class="skill-block">
+          <h3>Security</h3>
+          <div class="chips">
+            <span class="chip">Vulnerability Assessment</span>
+            <span class="chip">Penetration Testing</span>
+            <span class="chip">Wireshark</span>
+            <span class="chip">Nmap</span>
+            <span class="chip">Splunk</span>
+          </div>
+        </div>
+        <div class="skill-block">
+          <h3>Systems</h3>
+          <div class="chips">
+            <span class="chip">AD DS</span>
+            <span class="chip">Group Policy</span>
+            <span class="chip">Windows Server</span>
+            <span class="chip">Kali Linux</span>
+            <span class="chip">Python</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="edu-card">
+      <div>
+        <h4>Bachelor's Degree in Cybersecurity</h4>
+        <p>Yarmouk University, Jordan — 2025</p>
+      </div>
+      <div class="gpa">GPA 3.34 / 4.0</div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="section-tag">02 — Field Engagements</div>
+    <h2>Experience</h2>
+
+    <div class="log">
+
+      <div class="entry">
+        <div class="entry-id">ENG-05</div>
+        <div class="entry-card">
+          <h3>Web-to-Root Penetration Test — Windows Server, IIS &amp; WordPress</h3>
+          <div class="entry-fields"><b>Target:</b> self-built IIS/WordPress server &nbsp; <b>Result:</b> code execution → privilege escalation</div>
+          <ul>
+            <li>Designed, built, and administered a vulnerable Windows Server target from scratch — IIS, PHP, MySQL, and WordPress with an embedded real-world CVE (CVE-2020-25213).</li>
+            <li>Ran a full black-box attack simulation to achieve code execution and escalate privileges through a misconfigured service.</li>
+            <li>Practiced end-to-end offensive methodology: recon, exploitation, and privilege escalation on infrastructure I configured myself.</li>
+          </ul>
+          <div class="entry-tags"><span class="tag-sm">Windows Server</span><span class="tag-sm">IIS</span><span class="tag-sm">WordPress</span><span class="tag-sm">CVE-2020-25213</span></div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-id">ENG-04</div>
+        <div class="entry-card">
+          <h3>Red Team vs. Blue Team Security Assessment</h3>
+          <div class="entry-fields"><b>Scope:</b> web application &nbsp; <b>Result:</b> exploited + detected</div>
+          <ul>
+            <li>Assessed and exploited common web application flaws — SQL Injection, XSS, Command Injection, and File Upload vulnerabilities.</li>
+            <li>Configured Splunk for centralized log collection, attack detection, and incident investigation.</li>
+            <li>Bridged offensive findings with defensive monitoring to close the loop between attack and detection.</li>
+          </ul>
+          <div class="entry-tags"><span class="tag-sm">SQLi</span><span class="tag-sm">XSS</span><span class="tag-sm">Splunk</span><span class="tag-sm">Log Analysis</span></div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-id">ENG-03</div>
+        <div class="entry-card">
+          <h3>Network Traffic Analysis</h3>
+          <div class="entry-fields"><b>Tooling:</b> Wireshark &nbsp; <b>Focus:</b> TCP / ARP behavior</div>
+          <ul>
+            <li>Captured and analyzed live network traffic, examining TCP and ARP protocol behavior.</li>
+            <li>Applied custom filters to isolate anomalies for troubleshooting and security investigation.</li>
+          </ul>
+          <div class="entry-tags"><span class="tag-sm">Wireshark</span><span class="tag-sm">TCP</span><span class="tag-sm">ARP</span></div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-id">ENG-02</div>
+        <div class="entry-card">
+          <h3>Windows Server &amp; Active Directory Deployment</h3>
+          <div class="entry-fields"><b>Scope:</b> domain infrastructure &nbsp; <b>Result:</b> centralized policy enforcement</div>
+          <ul>
+            <li>Configured Windows Server and AD DS, including user, group, and domain controller management.</li>
+            <li>Implemented DNS, DHCP, and Group Policy Objects to enforce centralized security and access control.</li>
+          </ul>
+          <div class="entry-tags"><span class="tag-sm">AD DS</span><span class="tag-sm">GPO</span><span class="tag-sm">DNS / DHCP</span></div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-id">ENG-01</div>
+        <div class="entry-card">
+          <h3>Enterprise Network Deployment — Routing, Switching &amp; Security</h3>
+          <div class="entry-fields"><b>Scope:</b> segmented enterprise topology &nbsp; <b>Result:</b> hardened, validated design</div>
+          <ul>
+            <li>Designed and built an enterprise topology using VLANs, inter-VLAN routing, and OSPF for scalable, segmented connectivity.</li>
+            <li>Deployed DHCP, DNS, SSH, SNMP, Syslog, and NAT for centralized management and monitoring.</li>
+            <li>Hardened the network with ACLs and Port Security, then systematically troubleshot to validate resilience.</li>
+          </ul>
+          <div class="entry-tags"><span class="tag-sm">VLANs</span><span class="tag-sm">OSPF</span><span class="tag-sm">ACLs</span><span class="tag-sm">Port Security</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="certifications">
+    <div class="section-tag">03 — In Progress</div>
+    <h2>Certifications</h2>
+    <div class="cert-grid">
+      <div class="cert-card">
+        <div>
+          <h4>CCNA</h4>
+          <p>Cisco Certified Network Associate</p>
+        </div>
+        <span class="badge">IN PROGRESS</span>
+      </div>
+      <div class="cert-card">
+        <div>
+          <h4>SC-200</h4>
+          <p>Microsoft Certified: Security Operations Analyst</p>
+        </div>
+        <span class="badge">IN PROGRESS</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="section-tag">04 — Reach Out</div>
+    <h2>Contact</h2>
+    <div class="contact-card">
+      <p>Looking for an entry-level Network Security Engineer or SOC Analyst who's comfortable
+      on both sides of the firewall. Let's talk.</p>
+      <div class="contact-links">
+        <a href="mailto:samaalghoul20@gmail.com" class="btn btn-primary">samaalghoul20@gmail.com</a>
+        <a href="tel:+962782082950" class="btn btn-outline">+962 782 082 950</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>Irbid, Jordan · Arabic (Native) · English (Very Good)</footer>
+
+<script>
+  const roles = ["Network Security Engineer", "SOC Analyst", "AD & Windows Server Admin", "Offensive / Defensive Security"];
+  const el = document.getElementById('typewriter');
+  let ri = 0, ci = 0, deleting = false;
+
+  function tick(){
+    const current = roles[ri];
+    if(!deleting){
+      ci++;
+      el.textContent = current.slice(0, ci);
+      if(ci === current.length){ deleting = true; setTimeout(tick, 1400); return; }
+    } else {
+      ci--;
+      el.textContent = current.slice(0, ci);
+      if(ci === 0){ deleting = false; ri = (ri + 1) % roles.length; }
+    }
+    setTimeout(tick, deleting ? 35 : 55);
+  }
+  tick();
+</script>
+
+</body>
+</html>
