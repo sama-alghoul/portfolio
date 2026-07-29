@@ -32,7 +32,6 @@
     *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important;}
   }
 
-  /* background grid texture */
   body::before{
     content:"";
     position:fixed; inset:0;
@@ -55,7 +54,6 @@
 
   code, .mono{font-family:'Space Mono',monospace;}
 
-  /* NAV */
   nav{
     position:sticky; top:0; z-index:10;
     background:rgba(247,249,255,0.88);
@@ -68,12 +66,53 @@
     flex-wrap:wrap; gap:12px;
   }
   .nav-id{font-family:'Space Mono',monospace; font-size:13px; color:var(--blue); letter-spacing:0.5px; font-weight:700;}
-  .nav-links{display:flex; gap:26px; list-style:none; margin:0; padding:0;}
+  .nav-links{display:flex; gap:22px; list-style:none; margin:0; padding:0; flex-wrap:wrap;}
   .nav-links a{color:var(--muted); text-decoration:none; font-size:14px; font-weight:600; transition:color .2s;}
   .nav-links a:hover, .nav-links a:focus-visible{color:var(--coral);}
 
   /* HERO */
-  header.hero{padding:88px 0 64px;}
+  .page-banner{
+    position:relative;
+    width:100%;
+    height:200px;
+    overflow:hidden;
+    background:linear-gradient(90deg, var(--blue), var(--coral));
+  }
+  .page-banner img{
+    position:absolute; inset:0;
+    width:100%; height:100%; object-fit:cover;
+    display:none;
+  }
+  .page-banner img.loaded{ display:block; }
+  .banner-fallback{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Space Mono',monospace; font-size:13px; color:#fff;
+    letter-spacing:0.5px;
+    text-shadow:0 1px 4px rgba(0,0,0,0.25);
+  }
+  .banner-fallback.hidden{ display:none; }
+
+  .avatar-stage{
+    position:relative;
+    width:120px; height:120px;
+    margin-top:-64px;
+    margin-bottom:20px;
+  }
+  .avatar-wrap{
+    position:relative; z-index:1;
+    width:120px; height:120px; border-radius:50%;
+    background:var(--panel); border:3px solid var(--bg);
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden; margin:0; flex-shrink:0;
+    box-shadow:0 4px 18px rgba(45,91,255,0.15);
+  }
+  .avatar-wrap img{width:100%; height:100%; object-fit:cover; display:none;}
+  .avatar-wrap img.loaded{display:block;}
+  .avatar-fallback{font-family:'Space Mono',monospace; font-size:11px; color:var(--muted); text-align:center; padding:0 10px; line-height:1.4;}
+
+  header.hero{padding:0 0 64px;}
+
   .status-line{
     font-family:'Space Mono',monospace; font-size:13px; color:var(--coral);
     display:flex; align-items:center; gap:10px; margin-bottom:22px; font-weight:700;
@@ -115,7 +154,6 @@
   .btn-outline{border-color:var(--panel-line); color:var(--text); background:var(--panel);}
   .btn-outline:hover{border-color:var(--coral); color:var(--coral);}
 
-  /* SECTION HEADERS */
   section{padding:70px 0; border-top:1px solid var(--panel-line);}
   .section-tag{
     font-family:'Space Mono',monospace; color:var(--coral); font-size:12px;
@@ -123,7 +161,6 @@
   }
   h2{font-family:'Sora',sans-serif; font-size:30px; margin:0 0 34px; font-weight:700; color:var(--text);}
 
-  /* ABOUT */
   .about-grid{display:grid; grid-template-columns:1.3fr 1fr; gap:48px;}
   @media (max-width:720px){.about-grid{grid-template-columns:1fr;}}
   .about-text p{color:var(--muted); font-size:15px; margin-bottom:16px;}
@@ -136,7 +173,6 @@
     padding:5px 10px; border-radius:var(--radius); font-weight:700;
   }
 
-  /* EXPERIENCE — case-log timeline */
   .log{border-left:2px solid var(--panel-line); margin-left:6px;}
   .entry{position:relative; padding:0 0 44px 34px;}
   .entry:last-child{padding-bottom:0;}
@@ -165,7 +201,6 @@
     border:1px solid var(--panel-line); padding:3px 8px; border-radius:var(--radius); font-weight:700;
   }
 
-  /* CERTS + EDUCATION */
   .cert-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
   @media (max-width:600px){.cert-grid{grid-template-columns:1fr;}}
   .cert-card{
@@ -189,7 +224,6 @@
   .edu-card p{margin:0; color:var(--muted); font-size:14px;}
   .gpa{font-family:'Space Mono',monospace; color:var(--blue); font-size:14px; font-weight:700;}
 
-  /* CONTACT */
   .contact-card{
     background:var(--panel); border:1px solid var(--panel-line); border-radius:var(--radius);
     padding:36px; text-align:center;
@@ -197,6 +231,51 @@
   }
   .contact-card p{color:var(--muted); max-width:440px; margin:0 auto 26px;}
   .contact-links{display:flex; gap:16px; justify-content:center; flex-wrap:wrap;}
+
+  /* FEEDBACK */
+  .feedback-card{
+    background:var(--panel); border:1px solid var(--panel-line); border-radius:var(--radius);
+    padding:32px; box-shadow:0 2px 10px rgba(45,91,255,0.06);
+    max-width:520px; margin:0 auto;
+  }
+  .feedback-card p.hint{color:var(--muted); font-size:14px; margin-top:0; margin-bottom:20px;}
+  .field{margin-bottom:16px;}
+  .field label{display:block; font-family:'Space Mono',monospace; font-size:12px; color:var(--blue); margin-bottom:6px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;}
+  .field input, .field textarea{
+    width:100%; padding:11px 12px; border-radius:var(--radius); border:1px solid var(--panel-line);
+    background:var(--bg); color:var(--text); font-family:'Manrope',sans-serif; font-size:14px;
+  }
+  .field textarea{resize:vertical; min-height:100px;}
+  .feedback-msg{font-family:'Space Mono',monospace; font-size:12.5px; margin-top:10px;}
+  .feedback-msg.err{color:var(--coral);}
+  .feedback-msg.ok{color:var(--mint);}
+
+  /* RESPONSES (testimonials pulled from feedback) */
+  .responses-rail{display:flex; align-items:stretch; gap:14px;}
+  .resp-arrow{
+    flex:0 0 auto; width:44px; height:44px; align-self:center;
+    border-radius:50%; border:1px solid var(--panel-line); background:var(--panel);
+    color:var(--blue); font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+    transition:all .2s;
+  }
+  .resp-arrow:hover{border-color:var(--blue); background:var(--blue); color:#fff;}
+  .resp-arrow:disabled{opacity:.35; cursor:default;}
+  .resp-arrow:disabled:hover{border-color:var(--panel-line); background:var(--panel); color:var(--blue);}
+  .resp-track{
+    display:flex; gap:16px; overflow-x:auto; scroll-behavior:smooth;
+    scrollbar-width:none; flex:1; padding:2px;
+  }
+  .resp-track::-webkit-scrollbar{display:none;}
+  .resp-card{
+    flex:0 0 220px; background:var(--panel); border:1px solid var(--panel-line); border-radius:var(--radius);
+    padding:20px; box-shadow:0 2px 10px rgba(45,91,255,0.06); display:flex; flex-direction:column; gap:10px;
+  }
+  .resp-name{font-family:'Sora',sans-serif; font-weight:700; font-size:15px; color:var(--text);}
+  .resp-text{color:var(--muted); font-size:13.5px; line-height:1.5; flex:1;}
+  .resp-date{font-family:'Space Mono',monospace; font-size:10.5px; color:var(--mint); text-transform:uppercase; letter-spacing:0.5px;}
+  .resp-empty, .resp-status{
+    font-family:'Space Mono',monospace; font-size:13px; color:var(--muted); padding:10px 4px;
+  }
 
   footer{padding:30px 0 60px; text-align:center; color:var(--muted); font-family:'Space Mono',monospace; font-size:12px;}
 </style>
@@ -209,15 +288,29 @@
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
       <li><a href="#certifications">Certifications</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#responses">Responses</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </div>
 </nav>
 
+<div class="page-banner">
+  <img id="banner-img" src="banner.jpg" alt="">
+  <span class="banner-fallback" id="banner-fallback">ADD banner.jpg — full-width cover photo</span>
+</div>
+
 <div class="wrap">
 
   <header class="hero">
+    <div class="avatar-stage">
+      <div class="avatar-wrap">
+        <img id="avatar-img" src="photo.jpg" alt="Sama Alghoul">
+        <span class="avatar-fallback" id="avatar-fallback">ADD<br>photo.jpg</span>
+      </div>
+    </div>
     <div class="status-line"><span class="status-dot"></span> STATUS: OPEN TO WORK — IRBID, JORDAN</div>
     <h1>Sama Alghoul</h1>
     <div class="role-type mono" id="typewriter"></div>
@@ -233,8 +326,8 @@
       <div>✉️ <span>samaalghoul20@gmail.com</span></div>
     </div>
     <div class="hero-cta">
-      <a href="#experience" class="btn btn-primary">View Experience</a>
-      <a href="mailto:samaalghoul20@gmail.com" class="btn btn-outline">Get In Touch</a>
+      <a href="#projects" class="btn btn-primary">View Projects</a>
+      <a href="#contact" class="btn btn-outline">Get In Touch</a>
     </div>
   </header>
 
@@ -300,8 +393,43 @@
   </section>
 
   <section id="experience">
-    <div class="section-tag">02 — Field Engagements</div>
+    <div class="section-tag">02 — Experience</div>
     <h2>Experience</h2>
+
+    <div class="log">
+
+      <div class="entry">
+        <div class="entry-id">APR 2026 — AUG 2026</div>
+        <div class="entry-card">
+          <h3>Professional Training — Security Management Technology (SMT)</h3>
+          <div class="entry-fields"><b>Focus:</b> Penetration Testing</div>
+          <ul>
+            <li>Foundations in Linux, Networking, Windows Active Directory, GRC, SOC, and Penetration Testing.</li>
+            <li>Soft skills training.</li>
+            <li>Specialized track: Penetration Testing.</li>
+          </ul>
+          <div class="entry-tags"><span class="tag-sm">Linux</span><span class="tag-sm">Networking</span><span class="tag-sm">AD</span><span class="tag-sm">GRC</span><span class="tag-sm">SOC</span><span class="tag-sm">Pentesting</span></div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-id">FEB 2024 — PRESENT</div>
+        <div class="entry-card">
+          <h3>Cyber Security Instructor — Private Tutor (Part-Time)</h3>
+          <ul>
+            <li>Delivered cybersecurity training on fundamental concepts.</li>
+            <li>Prepared and led hands-on labs.</li>
+          </ul>
+          <div class="entry-tags"><span class="tag-sm">Teaching</span><span class="tag-sm">Curriculum Design</span><span class="tag-sm">Hands-on Labs</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="section-tag">03 — Field Engagements</div>
+    <h2>Projects</h2>
 
     <div class="log">
 
@@ -377,7 +505,7 @@
   </section>
 
   <section id="certifications">
-    <div class="section-tag">03 — In Progress</div>
+    <div class="section-tag">04 — In Progress</div>
     <h2>Certifications</h2>
     <div class="cert-grid">
       <div class="cert-card">
@@ -397,8 +525,41 @@
     </div>
   </section>
 
+  <section id="feedback">
+    <div class="section-tag">05 — Tutoring</div>
+    <h2>Feedback</h2>
+    <div class="feedback-card">
+      <p class="hint">Feedback from tutoring students. Submissions are reviewed before they appear below.</p>
+
+      <div id="feedback-form">
+        <div class="field">
+          <label for="fb-name">Name</label>
+          <input type="text" id="fb-name" placeholder="Your name">
+        </div>
+        <div class="field">
+          <label for="fb-text">Feedback</label>
+          <textarea id="fb-text" placeholder="Write your feedback..."></textarea>
+        </div>
+        <button class="btn btn-primary" id="send-btn" type="button">Send Feedback</button>
+        <div class="feedback-msg ok" id="send-msg"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="responses">
+    <div class="section-tag">06 — What Students Say</div>
+    <h2>Responses</h2>
+    <div class="responses-rail">
+      <button class="resp-arrow" id="resp-prev" type="button" aria-label="Previous">&#8592;</button>
+      <div class="resp-track" id="resp-track">
+        <div class="resp-status" id="resp-status">Loading responses…</div>
+      </div>
+      <button class="resp-arrow" id="resp-next" type="button" aria-label="Next">&#8594;</button>
+    </div>
+  </section>
+
   <section id="contact">
-    <div class="section-tag">04 — Reach Out</div>
+    <div class="section-tag">07 — Reach Out</div>
     <h2>Contact</h2>
     <div class="contact-card">
       <p>Looking for an entry-level Network Security Engineer or SOC Analyst who's comfortable
@@ -414,11 +575,41 @@
 
 <footer>Irbid, Jordan · Arabic (Native) · English (Very Good)</footer>
 
+<!-- ====================================================================
+     FIREBASE (backend-as-a-service — stores & serves the Responses data)
+     1. Go to https://console.firebase.google.com, create a free project.
+     2. Build > Firestore Database > Create database (start in test mode,
+        then paste in the moderation-based rules given in the chat reply —
+        public writes are always saved as "pending" and only "approved"
+        entries are ever readable by visitors).
+     3. Project settings > your apps > Web app (</>) > copy the config
+        object Firebase gives you and paste it below, replacing the
+        placeholder values.
+     4. New feedback lands in Firestore with status "pending". Open
+        Firestore Database > Data in the console, find the doc, edit its
+        "status" field to "approved" to publish it (or delete it to reject).
+     ==================================================================== -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAxwEj8sEzF9zVQDUEU6jcXUzt1_DSDJmM",
+    authDomain: "portfolio-bf638.firebaseapp.com",
+    projectId: "portfolio-bf638",
+    storageBucket: "portfolio-bf638.firebasestorage.app",
+    messagingSenderId: "733521087233",
+    appId: "1:733521087233:web:aeac4635f2fed2cdcca900"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const feedbackCol = db.collection('feedback');
+</script>
+
+<script>
+  // Typewriter
   const roles = ["Network Security Engineer", "SOC Analyst", "AD & Windows Server Admin", "Offensive / Defensive Security"];
   const el = document.getElementById('typewriter');
   let ri = 0, ci = 0, deleting = false;
-
   function tick(){
     const current = roles[ri];
     if(!deleting){
@@ -433,6 +624,105 @@
     setTimeout(tick, deleting ? 35 : 55);
   }
   tick();
+
+  // Avatar: show image if it loads, otherwise keep the fallback label
+  const avImg = document.getElementById('avatar-img');
+  avImg.addEventListener('load', () => {
+    avImg.classList.add('loaded');
+    document.getElementById('avatar-fallback').style.display = 'none';
+  });
+  avImg.addEventListener('error', () => {
+    avImg.style.display = 'none';
+  });
+
+  const bannerImg = document.getElementById('banner-img');
+  bannerImg.addEventListener('load', () => {
+    bannerImg.classList.add('loaded');
+    document.getElementById('banner-fallback').classList.add('hidden');
+  });
+
+  document.getElementById('send-btn').addEventListener('click', () => {
+    const name = document.getElementById('fb-name').value.trim();
+    const text = document.getElementById('fb-text').value.trim();
+    const sendMsg = document.getElementById('send-msg');
+    if(!name || !text){
+      sendMsg.className = 'feedback-msg err';
+      sendMsg.textContent = 'Please fill in both fields.';
+      return;
+    }
+
+    sendMsg.className = 'feedback-msg ok';
+    sendMsg.textContent = 'Sending...';
+
+    // Save the feedback to Firestore as "pending". It will only appear in the
+    // Responses section once it's approved in the Firebase console — see the
+    // moderation step in the setup instructions.
+    feedbackCol.add({
+      name: name,
+      text: text,
+      status: 'pending',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+      sendMsg.textContent = 'Thanks! Your feedback was submitted and will appear once reviewed.';
+      document.getElementById('fb-name').value = '';
+      document.getElementById('fb-text').value = '';
+    }).catch((err) => {
+      sendMsg.className = 'feedback-msg err';
+      sendMsg.textContent = 'Could not save feedback. Please try again later.';
+      console.error(err);
+    });
+  });
+
+  // ----------------- RESPONSES CAROUSEL -----------------
+  const respTrack = document.getElementById('resp-track');
+  const respPrev = document.getElementById('resp-prev');
+  const respNext = document.getElementById('resp-next');
+
+  function renderResponses(snapshot){
+    respTrack.innerHTML = '';
+    if(snapshot.empty){
+      respTrack.innerHTML = '<div class="resp-empty">No responses yet — be the first to leave feedback above.</div>';
+      return;
+    }
+    snapshot.forEach((doc) => {
+      const data = doc.data();
+      const card = document.createElement('div');
+      card.className = 'resp-card';
+
+      const nameEl = document.createElement('div');
+      nameEl.className = 'resp-name';
+      nameEl.textContent = data.name || 'Anonymous';
+
+      const textEl = document.createElement('div');
+      textEl.className = 'resp-text';
+      textEl.textContent = data.text || '';
+
+      card.appendChild(nameEl);
+      card.appendChild(textEl);
+
+      if(data.createdAt && data.createdAt.toDate){
+        const dateEl = document.createElement('div');
+        dateEl.className = 'resp-date';
+        dateEl.textContent = data.createdAt.toDate().toLocaleDateString();
+        card.appendChild(dateEl);
+      }
+
+      respTrack.appendChild(card);
+    });
+  }
+
+  feedbackCol
+    .where('status', '==', 'approved')
+    .orderBy('createdAt', 'desc')
+    .onSnapshot(renderResponses, (err) => {
+      respTrack.innerHTML = '<div class="resp-status">Could not load responses.</div>';
+      console.error(err);
+      // If this errors with "requires an index", Firestore's error message
+      // includes a direct link to auto-create the composite index — click it.
+    });
+
+  respPrev.addEventListener('click', () => respTrack.scrollBy({ left: -260, behavior: 'smooth' }));
+  respNext.addEventListener('click', () => respTrack.scrollBy({ left: 260, behavior: 'smooth' }));
 </script>
 
 </body>
