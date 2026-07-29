@@ -577,17 +577,9 @@
 
 <!-- ====================================================================
      FIREBASE (backend-as-a-service — stores & serves the Responses data)
-     1. Go to https://console.firebase.google.com, create a free project.
-     2. Build > Firestore Database > Create database (start in test mode,
-        then paste in the moderation-based rules given in the chat reply —
-        public writes are always saved as "pending" and only "approved"
-        entries are ever readable by visitors).
-     3. Project settings > your apps > Web app (</>) > copy the config
-        object Firebase gives you and paste it below, replacing the
-        placeholder values.
-     4. New feedback lands in Firestore with status "pending". Open
-        Firestore Database > Data in the console, find the doc, edit its
-        "status" field to "approved" to publish it (or delete it to reject).
+     Console: https://console.firebase.google.com
+     Data: Firestore Database > Data tab > feedback collection
+     Rules: Firestore Database > Rules tab
      ==================================================================== -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -625,7 +617,10 @@
   }
   tick();
 
-  // Avatar & banner: show image immediately if already loaded, otherwise wait for load event
+  // Avatar & banner: show image immediately if already loaded (cached),
+  // otherwise wait for the load event. This fixes images that "sometimes"
+  // don't appear, which happened when the load event fired before this
+  // script attached its listener.
   function showImage(img, fallbackEl){
     img.classList.add('loaded');
     if(fallbackEl) fallbackEl.style.display = 'none';
@@ -652,7 +647,8 @@
     });
   }
 
-  // Feedback submission
+  // Feedback submission — saved as "pending", only shown after you approve
+  // it in the Firebase console (Firestore Database > Data > feedback).
   document.getElementById('send-btn').addEventListener('click', () => {
     const name = document.getElementById('fb-name').value.trim();
     const text = document.getElementById('fb-text').value.trim();
