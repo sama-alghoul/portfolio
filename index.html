@@ -625,7 +625,7 @@
   }
   tick();
 
-  // Avatar: show image if it loads, otherwise keep the fallback label
+  // Avatar & banner: show image immediately if already loaded, otherwise wait for load event
   function showImage(img, fallbackEl){
     img.classList.add('loaded');
     if(fallbackEl) fallbackEl.style.display = 'none';
@@ -652,9 +652,20 @@
     });
   }
 
-    // Save the feedback to Firestore as "pending". It will only appear in the
-    // Responses section once it's approved in the Firebase console — see the
-    // moderation step in the setup instructions.
+  // Feedback submission
+  document.getElementById('send-btn').addEventListener('click', () => {
+    const name = document.getElementById('fb-name').value.trim();
+    const text = document.getElementById('fb-text').value.trim();
+    const sendMsg = document.getElementById('send-msg');
+    if(!name || !text){
+      sendMsg.className = 'feedback-msg err';
+      sendMsg.textContent = 'Please fill in both fields.';
+      return;
+    }
+
+    sendMsg.className = 'feedback-msg ok';
+    sendMsg.textContent = 'Sending...';
+
     feedbackCol.add({
       name: name,
       text: text,
@@ -715,8 +726,6 @@
     .onSnapshot(renderResponses, (err) => {
       respTrack.innerHTML = '<div class="resp-status">Could not load responses.</div>';
       console.error(err);
-      // If this errors with "requires an index", Firestore's error message
-      // includes a direct link to auto-create the composite index — click it.
     });
 
   respPrev.addEventListener('click', () => respTrack.scrollBy({ left: -260, behavior: 'smooth' }));
