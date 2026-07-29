@@ -626,33 +626,31 @@
   tick();
 
   // Avatar: show image if it loads, otherwise keep the fallback label
+  function showImage(img, fallbackEl){
+    img.classList.add('loaded');
+    if(fallbackEl) fallbackEl.style.display = 'none';
+  }
+
   const avImg = document.getElementById('avatar-img');
-  avImg.addEventListener('load', () => {
-    avImg.classList.add('loaded');
-    document.getElementById('avatar-fallback').style.display = 'none';
-  });
-  avImg.addEventListener('error', () => {
-    avImg.style.display = 'none';
-  });
+  const avFallback = document.getElementById('avatar-fallback');
+  if(avImg.complete && avImg.naturalWidth > 0){
+    showImage(avImg, avFallback);
+  } else {
+    avImg.addEventListener('load', () => showImage(avImg, avFallback));
+  }
+  avImg.addEventListener('error', () => { avImg.style.display = 'none'; });
 
   const bannerImg = document.getElementById('banner-img');
-  bannerImg.addEventListener('load', () => {
+  const bannerFallback = document.getElementById('banner-fallback');
+  if(bannerImg.complete && bannerImg.naturalWidth > 0){
     bannerImg.classList.add('loaded');
-    document.getElementById('banner-fallback').classList.add('hidden');
-  });
-
-  document.getElementById('send-btn').addEventListener('click', () => {
-    const name = document.getElementById('fb-name').value.trim();
-    const text = document.getElementById('fb-text').value.trim();
-    const sendMsg = document.getElementById('send-msg');
-    if(!name || !text){
-      sendMsg.className = 'feedback-msg err';
-      sendMsg.textContent = 'Please fill in both fields.';
-      return;
-    }
-
-    sendMsg.className = 'feedback-msg ok';
-    sendMsg.textContent = 'Sending...';
+    bannerFallback.classList.add('hidden');
+  } else {
+    bannerImg.addEventListener('load', () => {
+      bannerImg.classList.add('loaded');
+      bannerFallback.classList.add('hidden');
+    });
+  }
 
     // Save the feedback to Firestore as "pending". It will only appear in the
     // Responses section once it's approved in the Firebase console — see the
